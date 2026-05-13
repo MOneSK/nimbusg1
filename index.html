@@ -43,7 +43,8 @@
    RESET & BASE
 ============================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { } /* scroll handled by momentum JS */
+/* ---- Smooth scroll native (required for sticky to work) ---- */
+html { scroll-behavior: smooth; }
 body {
   background: var(--bg);
   color: var(--white);
@@ -175,7 +176,17 @@ header {
    SECTION BASE
 ============================================ */
 section { position: relative; overflow: hidden; }
+section#hero { overflow: visible; } /* let orbs bleed full width */
 .container { width: var(--container); margin: 0 auto; }
+
+/* Hero full-width orb backdrop */
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: -20vh -20vw;
+  pointer-events: none;
+  z-index: 0;
+}
 
 /* ============================================
    BUTTONS
@@ -318,31 +329,35 @@ section { position: relative; overflow: hidden; }
 }
 @keyframes fan-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
-/* Hero glow orbs */
+/* Hero glow orbs — viewport-relative, full-width spread */
 .hero-orb-1 {
-  width: 620px; height: 620px;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  animation-duration: 10s;
+  width: 80vw; height: 80vw;
+  max-width: 900px; max-height: 900px;
+  top: 50%; right: -10vw;
+  transform: translateY(-50%);
+  animation-duration: 12s;
 }
 .hero-orb-2 {
-  width: 420px; height: 420px;
-  top: 5%; right: -80px;
-  animation-duration: 16s;
+  width: 60vw; height: 60vw;
+  max-width: 700px; max-height: 700px;
+  top: -10vh; left: -5vw;
+  animation-duration: 18s;
   animation-direction: alternate-reverse;
   animation-name: orb-drift2;
 }
 .hero-orb-3 {
-  width: 360px; height: 360px;
-  bottom: -60px; left: 10%;
-  animation-duration: 20s;
+  width: 50vw; height: 50vw;
+  max-width: 600px; max-height: 600px;
+  bottom: -15vh; left: 20vw;
+  animation-duration: 22s;
   animation-name: orb-drift2;
   animation-direction: alternate;
 }
 .hero-orb-4 {
-  width: 280px; height: 280px;
-  top: 20%; left: -60px;
-  animation-duration: 18s;
+  width: 40vw; height: 40vw;
+  max-width: 500px; max-height: 500px;
+  top: 30%; left: -8vw;
+  animation-duration: 16s;
   animation-direction: alternate-reverse;
 }
 
@@ -978,31 +993,6 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
       </a>
     </div>
   </div>
-
-  <div class="hero-visual reveal stagger-2">
-    <div class="fan-circle">
-      <!-- Particles -->
-      <div class="particle" style="left:40%;bottom:0;--dx:-15px;animation-duration:3.2s;animation-delay:0s;"></div>
-      <div class="particle" style="left:55%;bottom:0;--dx:20px;animation-duration:4s;animation-delay:0.8s;"></div>
-      <div class="particle" style="left:30%;bottom:10%;--dx:-8px;animation-duration:3.7s;animation-delay:1.4s;"></div>
-      <div class="particle" style="left:65%;bottom:5%;--dx:12px;animation-duration:4.5s;animation-delay:2s;"></div>
-      <div class="particle" style="left:48%;bottom:0;--dx:-22px;animation-duration:3.4s;animation-delay:0.4s;"></div>
-
-      <!-- Fan SVG -->
-      <svg class="fan-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Hub -->
-        <circle cx="100" cy="100" r="14" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
-        <circle cx="100" cy="100" r="5" fill="rgba(0,0,238,0.6)"/>
-        <!-- Blades -->
-        <g opacity="0.8">
-          <path d="M100 86 C80 80, 50 60, 60 30 C70 15, 95 20, 100 86 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
-          <path d="M114 100 C120 80, 140 50, 170 60 C185 70, 180 95, 114 100 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
-          <path d="M100 114 C120 120, 150 140, 140 170 C130 185, 105 180, 100 114 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
-          <path d="M86 100 C80 120, 60 150, 30 140 C15 130, 20 105, 86 100 Z" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
-        </g>
-      </svg>
-    </div>
-  </div>
 </section>
 
 <div class="section-sep"></div>
@@ -1172,81 +1162,725 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
 <div class="section-sep"></div>
 
 <!-- =========================================
-     OPERATIONAL LOGIC
+     CINEMATIC OPERATION SHOWCASE
 ========================================= -->
-<section id="logic">
-  <div class="logic-bg-glow"></div>
-  <div class="logic-inner">
-    <div style="margin-bottom:56px;" class="reveal">
-      <p class="section-label">
-        <span data-lang="en">Engineered Intelligence</span>
-        <span data-lang="vn">Trí Thông Minh Được Thiết Kế</span>
-      </p>
-      <h2 class="section-h2">
-        <span data-lang="en">Operational Logic</span>
-        <span data-lang="vn">Logic Vận Hành</span>
-      </h2>
-    </div>
-    <div class="logic-grid">
-      <!-- Diagram -->
-      <div class="logic-diagram reveal">
-        <div class="sensing-zone zone-outer"></div>
-        <div class="sensing-zone zone-inner"></div>
-        <div class="sensing-zone zone-trigger"></div>
-        <!-- Center fan icon -->
-        <svg width="36" height="36" viewBox="0 0 36 36" fill="none" style="z-index:2;position:relative;">
-          <circle cx="18" cy="18" r="5" fill="rgba(0,0,238,0.5)"/>
-          <circle cx="18" cy="18" r="18" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
-        </svg>
-        <!-- Zone labels -->
-        <span class="zone-label label-40" style="font-family:var(--font-mono);font-size:10px;color:var(--gray-muted);">Range: 40cm</span>
-        <span class="zone-label label-15" style="font-family:var(--font-mono);font-size:10px;color:var(--gray-muted);">Range: 15cm</span>
-        <span class="zone-label label-7" style="font-family:var(--font-mono);font-size:10px;color:rgba(220,60,60,0.8);">Stop: &lt;7cm</span>
-      </div>
-      <!-- Callouts -->
-      <div class="logic-callouts reveal">
-        <div class="callout-item">
-          <p class="callout-label">01 — DETECTION</p>
-          <p class="callout-title">
-            <span data-lang="en">Idle Detection at 40cm</span>
-            <span data-lang="vn">Phát Hiện Hoạt Động tại 40cm</span>
-          </p>
-          <p class="callout-desc">
-            <span data-lang="en">Outer zone activates standby mode. System prepares before you arrive.</span>
-            <span data-lang="vn">Vùng ngoài kích hoạt chế độ chờ. Hệ thống chuẩn bị trước khi bạn đến.</span>
-          </p>
-          <p class="callout-data">Threshold: 40cm / Trigger: 1.5s latency</p>
-        </div>
-        <div class="callout-item">
-          <p class="callout-label">02 — SAMPLING</p>
-          <p class="callout-title">
-            <span class="pulse-dot"></span>
-            <span data-lang="en">3-Second Gesture Sampling</span>
-            <span data-lang="vn">Lấy Mẫu Cử Chỉ 3 Giây</span>
-          </p>
-          <p class="callout-desc">
-            <span data-lang="en">Inner zone at 15cm triggers active cooling. Speed scales with proximity in real time.</span>
-            <span data-lang="vn">Vùng trong tại 15cm kích hoạt làm mát tích cực. Tốc độ tăng theo khoảng cách.</span>
-          </p>
-          <p class="callout-data">Sampling: 3s window / Resolution: 1cm</p>
-        </div>
-        <div class="callout-item">
-          <p class="callout-label">03 — SAFETY</p>
-          <h3 class="callout-title">
-            <span data-lang="en">Emergency Force Stop</span>
-            <span data-lang="vn">Dừng Khẩn Cấp</span>
-          </h3>
-          <p class="callout-desc">
-            <span data-lang="en">Triggered automatically when any object is detected within 7cm. Zero-delay response.</span>
-            <span data-lang="vn">Kích hoạt tự động khi phát hiện vật thể trong vòng 7cm. Phản hồi không trễ.</span>
-          </p>
-          <p class="callout-data">Threshold: 7cm / Response: &lt;50ms</p>
-          <span class="emergency">FORCE STOP PROTOCOL</span>
-        </div>
-      </div>
-    </div>
+<style>
+/* ============================================
+   PRODUCT SHOWCASE — STATIC, MOBILE-FIRST
+============================================ */
+
+/* Product image section */
+#product-shot {
+  padding: 0;
+  background: #000;
+  position: relative;
+  overflow: hidden;
+}
+.product-img-wrap {
+  position: relative;
+  width: 100%;
+  max-height: 80vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-img-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom,
+    rgba(0,0,0,0.55) 0%,
+    transparent 30%,
+    transparent 60%,
+    rgba(0,0,0,0.9) 100%);
+  pointer-events: none;
+}
+.product-img-wrap img {
+  width: 100%;
+  height: 80vh;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+.product-caption {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  z-index: 2;
+  padding: 48px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.product-caption-title {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: #fff;
+}
+.product-caption-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  max-width: 28ch;
+  line-height: 1.6;
+  text-align: right;
+}
+@media (max-width: 600px) {
+  .product-caption { padding: 24px; flex-direction: column; align-items: flex-start; }
+  .product-caption-sub { text-align: left; }
+}
+
+/* ── OPERATION SHOWCASE — TAB SYSTEM ─────── */
+#operation-showcase {
+  background: #000;
+  padding: 92px 0 0;
+  position: relative;
+}
+.op-header {
+  text-align: center;
+  padding: 0 24px 56px;
+}
+.op-tabs-wrap {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Tab nav */
+.op-tab-nav {
+  display: flex;
+  width: 100%;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.op-tab-nav::-webkit-scrollbar { display: none; }
+
+.op-tab-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 18px 12px;
+  font-family: var(--font-main);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s;
+  white-space: nowrap;
+  position: relative;
+}
+.op-tab-btn:hover { color: rgba(255,255,255,0.6); }
+.op-tab-btn.active {
+  color: #fff;
+  border-bottom-color: var(--blue);
+}
+.op-tab-btn .tab-num {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--blue);
+  margin-bottom: 4px;
+  letter-spacing: 0.1em;
+}
+.op-tab-btn.active .tab-dot {
+  position: absolute;
+  bottom: -3px; left: 50%;
+  transform: translateX(-50%);
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 8px rgba(91,168,255,0.8);
+}
+
+/* Tab panels */
+.op-panels {
+  position: relative;
+  overflow: hidden;
+}
+.op-panel {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  min-height: 420px;
+}
+.op-panel.active { display: grid; }
+
+/* Panel left — visual */
+.op-panel-visual {
+  position: relative;
+  background: #05050f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  min-height: 320px;
+}
+/* Panel right — info */
+.op-panel-info {
+  padding: 56px 48px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1px solid rgba(255,255,255,0.06);
+}
+.op-panel-eyebrow {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin-bottom: 16px;
+}
+.op-panel-eyebrow.orange { color: #FFB347; }
+.op-panel-eyebrow.red    { color: #FF5570; }
+.op-panel-h2 {
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 20px;
+}
+.op-panel-desc {
+  font-size: 15px;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.75;
+  margin-bottom: 28px;
+}
+.op-spec-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.op-spec-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+}
+.op-spec-key {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.28);
+  min-width: 70px;
+  text-transform: uppercase;
+}
+.op-spec-val {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+.op-spec-val.blue   { color: #5BA8FF; }
+.op-spec-val.orange { color: #FFB347; }
+.op-spec-val.red    { color: #FF5570; }
+
+/* ── SVG ILLUSTRATIONS (pure CSS, no canvas) ── */
+.op-vis-svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* Breathing ring animation */
+@keyframes ring-breathe {
+  0%,100% { opacity: 0.25; r: 55; }
+  50%      { opacity: 0.7;  r: 65; }
+}
+@keyframes ring-expand {
+  0%   { r: 55;  opacity: 0.8; }
+  60%  { r: 160; opacity: 0.5; }
+  100% { r: 55;  opacity: 0.8; }
+}
+@keyframes fan-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes fan-fast {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes hand-approach {
+  0%,100% { transform: translateX(0);   }
+  50%     { transform: translateX(-50px); }
+}
+@keyframes ripple-out {
+  0%   { r: 10;  opacity: 0.9; }
+  100% { r: 120; opacity: 0;   }
+}
+@keyframes pulse-dot {
+  0%,100% { opacity: 1;   }
+  50%     { opacity: 0.3; }
+}
+@keyframes danger-flash {
+  0%,100% { stroke-opacity: 0.3; }
+  50%     { stroke-opacity: 1;   }
+}
+@keyframes hand-close {
+  0%,100% { transform: translateX(0); }
+  60%,80% { transform: translateX(-65px); }
+}
+@keyframes presence-pulse {
+  0%,100% { opacity: 0.08; }
+  50%     { opacity: 0.18; }
+}
+@keyframes field-shrink {
+  0%   { r: 160; opacity: 0.5; }
+  100% { r: 55;  opacity: 0.2; }
+}
+@keyframes wave-out {
+  0%   { r: 5;   opacity: 0.8; }
+  100% { r: 90;  opacity: 0;   }
+}
+@keyframes gauge-fill {
+  0%   { stroke-dashoffset: 283; }
+  50%  { stroke-dashoffset: 80;  }
+  100% { stroke-dashoffset: 283; }
+}
+@keyframes pwm-count {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 1;   }
+  100% { opacity: 0.4; }
+}
+@keyframes countdown-tick {
+  0%   { opacity: 1;   }
+  49%  { opacity: 1;   }
+  50%  { opacity: 0.3; }
+  99%  { opacity: 0.3; }
+  100% { opacity: 1;   }
+}
+
+@media (max-width: 750px) {
+  .op-panel { grid-template-columns: 1fr; }
+  .op-panel-visual { min-height: 240px; }
+  .op-panel-info { padding: 32px 24px; border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+  .op-tab-btn { min-width: 90px; padding: 16px 8px; font-size: 9px; }
+}
+
+/* ── MOBILE PERF: Kill heavy effects on touch devices ── */
+@media (hover: none) and (pointer: coarse) {
+  /* Disable filter:blur on orbs — biggest mobile perf killer */
+  .glow-orb { filter: none !important; opacity: 0.15 !important; animation: none !important; }
+  /* Kill grain overlay */
+  body::before { display: none !important; }
+  /* Kill fan-circle pseudo rings */
+  .fan-circle::before, .fan-circle::after { animation: none !important; }
+  /* Kill particle animations */
+  .particle { display: none !important; }
+  /* Reduce backdrop-filter on header */
+  header { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; background: rgba(1,1,0,0.92) !important; }
+  /* Disable hover-only card scale */
+  .benefit-card:hover { transform: none !important; }
+  /* Kill orb drift animations */
+  .hero-orb-1, .hero-orb-2, .hero-orb-3, .hero-orb-4 { animation: none !important; }
+}
+</style>
+
+<div class="section-sep"></div>
+
+<!-- =========================================
+     OPERATION SHOWCASE — TAB SYSTEM
+========================================= -->
+<section id="operation-showcase">
+  <div class="op-header reveal">
+    <p class="section-label">
+      <span data-lang="en">How It Works</span>
+      <span data-lang="vn">Cách Hoạt Động</span>
+    </p>
+    <h2 class="section-h2">
+      <span data-lang="en">Six modes. One intelligent device.</span>
+      <span data-lang="vn">Sáu chế độ. Một thiết bị thông minh.</span>
+    </h2>
   </div>
+
+  <div class="op-tabs-wrap">
+    <!-- Tab nav -->
+    <div class="op-tab-nav" role="tablist">
+      <button class="op-tab-btn active" onclick="opTab(0)" role="tab">
+        <span class="tab-num">01</span>
+        <span data-lang="en">Idle</span><span data-lang="vn">Chờ</span>
+        <span class="tab-dot"></span>
+      </button>
+      <button class="op-tab-btn" onclick="opTab(1)" role="tab">
+        <span class="tab-num">02</span>
+        <span data-lang="en">Activation</span><span data-lang="vn">Kích hoạt</span>
+      </button>
+      <button class="op-tab-btn" onclick="opTab(2)" role="tab">
+        <span class="tab-num">03</span>
+        <span data-lang="en">Tracking</span><span data-lang="vn">Theo dõi</span>
+      </button>
+      <button class="op-tab-btn" onclick="opTab(3)" role="tab">
+        <span class="tab-num">04</span>
+        <span data-lang="en">Sampling</span><span data-lang="vn">Lấy mẫu</span>
+      </button>
+      <button class="op-tab-btn" onclick="opTab(4)" role="tab">
+        <span class="tab-num">05</span>
+        <span data-lang="en">Safety</span><span data-lang="vn">An toàn</span>
+      </button>
+      <button class="op-tab-btn" onclick="opTab(5)" role="tab">
+        <span class="tab-num">06</span>
+        <span data-lang="en">Shutdown</span><span data-lang="vn">Tắt</span>
+      </button>
+    </div>
+
+    <!-- Panels -->
+    <div class="op-panels">
+
+      <!-- PANEL 0 — IDLE -->
+      <div class="op-panel active" id="op-panel-0">
+        <div class="op-panel-visual">
+          <svg class="op-vis-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Breathing standby ring -->
+            <circle cx="150" cy="140" r="55" fill="none" stroke="#5BA8FF" stroke-width="1" opacity="0.3">
+              <animate attributeName="r" values="52;62;52" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.2;0.55;0.2" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="140" r="70" fill="none" stroke="#5BA8FF" stroke-width="0.5" opacity="0.12">
+              <animate attributeName="r" values="68;78;68" dur="3s" begin="0.4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.08;0.18;0.08" dur="3s" begin="0.4s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Fan blades — very slow -->
+            <g transform="translate(150,140)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="18s" repeatCount="indefinite" additive="sum"/>
+              <path d="M0,0 C-12,-18,-5,-52,1,-60 C14,-50,15,-20,0,0Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/>
+              <path d="M0,0 C18,-12,52,-5,60,1 C50,14,20,15,0,0Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/>
+              <path d="M0,0 C12,18,5,52,-1,60 C-14,50,-15,20,0,0Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/>
+              <path d="M0,0 C-18,12,-52,5,-60,-1 C-50,-14,-20,-15,0,0Z" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="0.6"/>
+            </g>
+            <!-- LED dot -->
+            <circle cx="150" cy="140" r="6" fill="#5BA8FF" opacity="0.5">
+              <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <!-- label -->
+            <text x="150" y="222" text-anchor="middle" font-family="Courier New" font-size="9" fill="rgba(91,168,255,0.45)" letter-spacing="2">15 CM STANDBY</text>
+          </svg>
+        </div>
+        <div class="op-panel-info">
+          <p class="op-panel-eyebrow">01 — IDLE STATE</p>
+          <h2 class="op-panel-h2">
+            <span data-lang="en">Quietly waiting.</span>
+            <span data-lang="vn">Âm thầm chờ đợi.</span>
+          </h2>
+          <p class="op-panel-desc">
+            <span data-lang="en">Fan rests in ultra-low-power standby. A 15 cm sensor aura breathes slowly, always alert for your hand.</span>
+            <span data-lang="vn">Quạt nghỉ ở chế độ chờ cực thấp. Vùng cảm biến 15cm thở nhẹ nhàng, luôn cảnh giác.</span>
+          </p>
+          <div class="op-spec-list">
+            <div class="op-spec-row"><span class="op-spec-key">State</span><span class="op-spec-val blue">STANDBY</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Field</span><span class="op-spec-val">15 cm</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">PWM</span><span class="op-spec-val">0</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 1 — ACTIVATION -->
+      <div class="op-panel" id="op-panel-1">
+        <div class="op-panel-visual">
+          <svg class="op-vis-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Expanding field ripple -->
+            <circle cx="150" cy="140" r="55" fill="none" stroke="#5BA8FF" stroke-width="1" opacity="0.6"/>
+            <circle cx="150" cy="140" r="55" fill="none" stroke="#5BA8FF" stroke-width="0.8" opacity="0">
+              <animate attributeName="r" values="55;160;160" dur="2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0.1;0" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="140" r="160" fill="none" stroke="#5BA8FF" stroke-width="0.5" stroke-dasharray="6 10" opacity="0.4">
+              <animate attributeName="opacity" values="0;0.4;0.4" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Fan — spinning up -->
+            <g transform="translate(150,140)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="2.5s" repeatCount="indefinite" additive="sum"/>
+              <path d="M0,0 C-12,-18,-5,-52,1,-60 C14,-50,15,-20,0,0Z" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+              <path d="M0,0 C18,-12,52,-5,60,1 C50,14,20,15,0,0Z" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+              <path d="M0,0 C12,18,5,52,-1,60 C-14,50,-15,20,0,0Z" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+              <path d="M0,0 C-18,12,-52,5,-60,-1 C-50,-14,-20,-15,0,0Z" fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+            </g>
+            <circle cx="150" cy="140" r="6" fill="#5BA8FF" opacity="0.9"/>
+            <!-- Hand approaching -->
+            <g>
+              <animateTransform attributeName="transform" type="translate" values="0,0;-55,0;0,0" dur="2.5s" repeatCount="indefinite" additive="sum"/>
+              <ellipse cx="268" cy="140" rx="10" ry="16" fill="rgba(255,220,185,0.5)"/>
+              <ellipse cx="264" cy="126" rx="3" ry="10" fill="rgba(255,220,185,0.5)"/>
+              <ellipse cx="271" cy="125" rx="3" ry="11" fill="rgba(255,220,185,0.5)"/>
+              <ellipse cx="278" cy="126" rx="3" ry="10" fill="rgba(255,220,185,0.5)"/>
+              <ellipse cx="285" cy="128" rx="3" ry="9" fill="rgba(255,220,185,0.5)"/>
+            </g>
+            <text x="150" y="222" text-anchor="middle" font-family="Courier New" font-size="9" fill="rgba(91,168,255,0.45)" letter-spacing="2">15 → 40 CM</text>
+          </svg>
+        </div>
+        <div class="op-panel-info">
+          <p class="op-panel-eyebrow">02 — HAND ACTIVATION</p>
+          <h2 class="op-panel-h2">
+            <span data-lang="en">Hand activates.<br>Field expands.</span>
+            <span data-lang="vn">Tay kích hoạt.<br>Vùng mở rộng.</span>
+          </h2>
+          <p class="op-panel-desc">
+            <span data-lang="en">Place your hand within 15 cm. Fan spins up instantly. Detection field expands from 15 cm to 40 cm to begin tracking your presence.</span>
+            <span data-lang="vn">Đặt tay trong vòng 15cm. Quạt khởi động ngay. Vùng phát hiện mở rộng từ 15cm lên 40cm để theo dõi sự hiện diện.</span>
+          </p>
+          <div class="op-spec-list">
+            <div class="op-spec-row"><span class="op-spec-key">State</span><span class="op-spec-val blue">ACTIVATING</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Field</span><span class="op-spec-val blue">15 → 40 cm</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">PWM</span><span class="op-spec-val">~140</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Trigger</span><span class="op-spec-val">1.5 s latency</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 2 — TRACKING -->
+      <div class="op-panel" id="op-panel-2">
+        <div class="op-panel-visual">
+          <svg class="op-vis-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Ambient field -->
+            <circle cx="150" cy="140" r="150" fill="rgba(91,168,255,0.04)">
+              <animate attributeName="opacity" values="0.4;0.8;0.4" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="140" r="150" fill="none" stroke="#5BA8FF" stroke-width="0.5" stroke-dasharray="6 10" opacity="0.3"/>
+            <circle cx="150" cy="140" r="55" fill="none" stroke="#5BA8FF" stroke-width="1" opacity="0.5"/>
+            <!-- Soft body presence oval -->
+            <ellipse cx="150" cy="80" rx="55" ry="70" fill="rgba(91,168,255,0.06)">
+              <animate attributeName="ry" values="68;74;68" dur="5s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;1;0.7" dur="5s" repeatCount="indefinite"/>
+            </ellipse>
+            <!-- Radar sweep -->
+            <path d="M150,140 L150,0" stroke="#5BA8FF" stroke-width="0.5" opacity="0.15" transform-origin="150 140">
+              <animateTransform attributeName="transform" type="rotate" from="0 150 140" to="360 150 140" dur="6s" repeatCount="indefinite"/>
+            </path>
+            <!-- Fan steady -->
+            <g transform="translate(150,140)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="2s" repeatCount="indefinite" additive="sum"/>
+              <path d="M0,0 C-12,-18,-5,-52,1,-60 C14,-50,15,-20,0,0Z" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.28)" stroke-width="0.7"/>
+              <path d="M0,0 C18,-12,52,-5,60,1 C50,14,20,15,0,0Z" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.28)" stroke-width="0.7"/>
+              <path d="M0,0 C12,18,5,52,-1,60 C-14,50,-15,20,0,0Z" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.28)" stroke-width="0.7"/>
+              <path d="M0,0 C-18,12,-52,5,-60,-1 C-50,-14,-20,-15,0,0Z" fill="rgba(255,255,255,0.16)" stroke="rgba(255,255,255,0.28)" stroke-width="0.7"/>
+            </g>
+            <circle cx="150" cy="140" r="6" fill="#5BA8FF" opacity="0.9"/>
+            <text x="150" y="268" text-anchor="middle" font-family="Courier New" font-size="9" fill="rgba(91,168,255,0.4)" letter-spacing="2">PRESENCE TRACKED</text>
+          </svg>
+        </div>
+        <div class="op-panel-info">
+          <p class="op-panel-eyebrow">03 — PRESENCE TRACKING</p>
+          <h2 class="op-panel-h2">
+            <span data-lang="en">It knows you're here.</span>
+            <span data-lang="vn">Nó biết bạn đang ở đây.</span>
+          </h2>
+          <p class="op-panel-desc">
+            <span data-lang="en">A 40 cm ambient field softly surrounds you. The fan maintains comfortable airflow automatically. No interaction needed.</span>
+            <span data-lang="vn">Vùng xung quanh 40cm bao phủ nhẹ nhàng. Quạt duy trì luồng khí thoải mái tự động. Không cần tương tác.</span>
+          </p>
+          <div class="op-spec-list">
+            <div class="op-spec-row"><span class="op-spec-key">State</span><span class="op-spec-val blue">ACTIVE</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Field</span><span class="op-spec-val">40 cm</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">PWM</span><span class="op-spec-val">~160</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Shutdown</span><span class="op-spec-val">8 s no presence</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 3 — SAMPLING -->
+      <div class="op-panel" id="op-panel-3">
+        <div class="op-panel-visual">
+          <svg class="op-vis-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Speed gauge arc -->
+            <circle cx="150" cy="145" r="90" fill="none" stroke="rgba(255,179,71,0.12)" stroke-width="12"/>
+            <circle cx="150" cy="145" r="90" fill="none" stroke="#FFB347" stroke-width="2" stroke-linecap="round"
+              stroke-dasharray="283" stroke-dashoffset="283" transform="rotate(-90 150 145)">
+              <animate attributeName="stroke-dashoffset" values="283;60;283" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Fan — variable speed illusion -->
+            <g transform="translate(150,145)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="1.2s" repeatCount="indefinite" additive="sum"/>
+              <path d="M0,0 C-12,-18,-5,-52,1,-60 C14,-50,15,-20,0,0Z" fill="rgba(255,179,71,0.2)" stroke="rgba(255,179,71,0.4)" stroke-width="0.7"/>
+              <path d="M0,0 C18,-12,52,-5,60,1 C50,14,20,15,0,0Z" fill="rgba(255,179,71,0.2)" stroke="rgba(255,179,71,0.4)" stroke-width="0.7"/>
+              <path d="M0,0 C12,18,5,52,-1,60 C-14,50,-15,20,0,0Z" fill="rgba(255,179,71,0.2)" stroke="rgba(255,179,71,0.4)" stroke-width="0.7"/>
+              <path d="M0,0 C-18,12,-52,5,-60,-1 C-50,-14,-20,-15,0,0Z" fill="rgba(255,179,71,0.2)" stroke="rgba(255,179,71,0.4)" stroke-width="0.7"/>
+            </g>
+            <circle cx="150" cy="145" r="6" fill="#FFB347" opacity="0.9"/>
+            <!-- PWM label -->
+            <text x="150" y="150" text-anchor="middle" font-family="Courier New" font-size="22" font-weight="bold" fill="rgba(255,179,71,0.7)">
+              PWM
+              <animate attributeName="opacity" values="0.5;1;0.5" dur="1.5s" repeatCount="indefinite"/>
+            </text>
+            <!-- wave ripples from hand gestures -->
+            <circle cx="248" cy="145" r="5" fill="none" stroke="#FFB347" stroke-width="1" opacity="0">
+              <animate attributeName="r" values="5;55;55" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+              <animate attributeName="opacity" values="0.8;0.1;0" dur="1.2s" repeatCount="indefinite" begin="0s"/>
+            </circle>
+            <circle cx="248" cy="145" r="5" fill="none" stroke="#FFB347" stroke-width="1" opacity="0">
+              <animate attributeName="r" values="5;55;55" dur="1.2s" repeatCount="indefinite" begin="0.4s"/>
+              <animate attributeName="opacity" values="0.8;0.1;0" dur="1.2s" repeatCount="indefinite" begin="0.4s"/>
+            </circle>
+            <circle cx="248" cy="145" r="5" fill="none" stroke="#FFB347" stroke-width="1" opacity="0">
+              <animate attributeName="r" values="5;55;55" dur="1.2s" repeatCount="indefinite" begin="0.8s"/>
+              <animate attributeName="opacity" values="0.8;0.1;0" dur="1.2s" repeatCount="indefinite" begin="0.8s"/>
+            </circle>
+            <text x="150" y="268" text-anchor="middle" font-family="Courier New" font-size="9" fill="rgba(255,179,71,0.5)" letter-spacing="2">SAMPLING · 3 SEC</text>
+          </svg>
+        </div>
+        <div class="op-panel-info">
+          <p class="op-panel-eyebrow orange">04 — ADAPTIVE SAMPLING</p>
+          <h2 class="op-panel-h2">
+            <span data-lang="en">Wave 3× to set<br>your speed.</span>
+            <span data-lang="vn">Vẫy 3 lần để cài<br>tốc độ.</span>
+          </h2>
+          <p class="op-panel-desc">
+            <span data-lang="en">Three in-out gestures within 2 s opens a 3-second sampling window. Move your hand closer for stronger airflow, further for softer. PWM: 50–270.</span>
+            <span data-lang="vn">Ba cử chỉ vào-ra trong 2 giây mở cửa sổ lấy mẫu 3 giây. Di chuyển tay gần hơn để tăng luồng khí. PWM: 50–270.</span>
+          </p>
+          <div class="op-spec-list">
+            <div class="op-spec-row"><span class="op-spec-key">State</span><span class="op-spec-val orange">SAMPLING</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Trigger</span><span class="op-spec-val">3 gestures / 2 s</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Window</span><span class="op-spec-val">3 seconds</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">PWM range</span><span class="op-spec-val orange">50 → 270</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 4 — SAFETY -->
+      <div class="op-panel" id="op-panel-4">
+        <div class="op-panel-visual">
+          <svg class="op-vis-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Danger ring flashing -->
+            <circle cx="150" cy="140" r="55" fill="none" stroke="#FF5570" stroke-width="1.5">
+              <animate attributeName="stroke-opacity" values="0.3;1;0.3" dur="0.6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="140" r="38" fill="rgba(255,85,112,0.06)">
+              <animate attributeName="fill-opacity" values="0.06;0.18;0.06" dur="0.6s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Fan stopped -->
+            <g transform="translate(150,140) rotate(30)">
+              <path d="M0,0 C-12,-18,-5,-52,1,-60 C14,-50,15,-20,0,0Z" fill="rgba(255,85,112,0.12)" stroke="rgba(255,85,112,0.3)" stroke-width="0.7"/>
+              <path d="M0,0 C18,-12,52,-5,60,1 C50,14,20,15,0,0Z" fill="rgba(255,85,112,0.12)" stroke="rgba(255,85,112,0.3)" stroke-width="0.7"/>
+              <path d="M0,0 C12,18,5,52,-1,60 C-14,50,-15,20,0,0Z" fill="rgba(255,85,112,0.12)" stroke="rgba(255,85,112,0.3)" stroke-width="0.7"/>
+              <path d="M0,0 C-18,12,-52,5,-60,-1 C-50,-14,-20,-15,0,0Z" fill="rgba(255,85,112,0.12)" stroke="rgba(255,85,112,0.3)" stroke-width="0.7"/>
+            </g>
+            <circle cx="150" cy="140" r="6" fill="#FF5570" opacity="0.9">
+              <animate attributeName="opacity" values="0.4;1;0.4" dur="0.6s" repeatCount="indefinite"/>
+            </circle>
+            <!-- LOCKED text -->
+            <text x="150" y="147" text-anchor="middle" font-family="Courier New" font-size="13" font-weight="bold" fill="#FF5570" letter-spacing="3">
+              LOCKED
+              <animate attributeName="opacity" values="1;0.2;1" dur="1.2s" repeatCount="indefinite"/>
+            </text>
+            <!-- Distance label -->
+            <text x="150" y="222" text-anchor="middle" font-family="Courier New" font-size="9" fill="rgba(255,85,112,0.6)" letter-spacing="2">&lt; 7 CM — FORCE STOP</text>
+          </svg>
+        </div>
+        <div class="op-panel-info">
+          <p class="op-panel-eyebrow red">05 — EMERGENCY STOP</p>
+          <h2 class="op-panel-h2">
+            <span data-lang="en">Too close.<br>Immediate stop.</span>
+            <span data-lang="vn">Quá gần.<br>Dừng ngay lập tức.</span>
+          </h2>
+          <p class="op-panel-desc">
+            <span data-lang="en">Any object within 7 cm for 1.5 seconds triggers an emergency force stop. System enters LOCKED state. 3-second recovery before reset.</span>
+            <span data-lang="vn">Vật thể trong vòng 7cm trong 1.5 giây kích hoạt dừng khẩn cấp. Hệ thống vào trạng thái KHÓA. Phục hồi trong 3 giây.</span>
+          </p>
+          <div class="op-spec-list">
+            <div class="op-spec-row"><span class="op-spec-key">State</span><span class="op-spec-val red">LOCKED</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Threshold</span><span class="op-spec-val red">&lt; 7 cm</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Trigger</span><span class="op-spec-val">1.5 s proximity</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Recovery</span><span class="op-spec-val">3 s cooldown</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANEL 5 — SHUTDOWN -->
+      <div class="op-panel" id="op-panel-5">
+        <div class="op-panel-visual">
+          <svg class="op-vis-svg" viewBox="0 0 300 280" xmlns="http://www.w3.org/2000/svg">
+            <!-- Shrinking field -->
+            <circle cx="150" cy="140" r="150" fill="none" stroke="#5BA8FF" stroke-width="0.5" stroke-dasharray="6 10">
+              <animate attributeName="r" values="150;65;65" dur="4s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.3;0.1;0.1" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="150" cy="140" r="55" fill="none" stroke="#5BA8FF" stroke-width="1">
+              <animate attributeName="opacity" values="0.4;0.15;0.4" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Fan slowing -->
+            <g transform="translate(150,140)">
+              <animateTransform attributeName="transform" type="rotate" from="0 0 0" to="360 0 0" dur="8s" repeatCount="indefinite" additive="sum"/>
+              <path d="M0,0 C-12,-18,-5,-52,1,-60 C14,-50,15,-20,0,0Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+              <path d="M0,0 C18,-12,52,-5,60,1 C50,14,20,15,0,0Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+              <path d="M0,0 C12,18,5,52,-1,60 C-14,50,-15,20,0,0Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+              <path d="M0,0 C-18,12,-52,5,-60,-1 C-50,-14,-20,-15,0,0Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="0.6"/>
+            </g>
+            <circle cx="150" cy="140" r="6" fill="#5BA8FF" opacity="0.3">
+              <animate attributeName="opacity" values="0.3;0.08;0.3" dur="4s" repeatCount="indefinite"/>
+            </circle>
+            <!-- Countdown -->
+            <text x="150" y="147" text-anchor="middle" font-family="Courier New" font-size="28" font-weight="bold" fill="rgba(255,255,255,0.08)" letter-spacing="2">8</text>
+            <text x="150" y="222" text-anchor="middle" font-family="Courier New" font-size="9" fill="rgba(91,168,255,0.35)" letter-spacing="2">NO PRESENCE · 40→15 CM</text>
+          </svg>
+        </div>
+        <div class="op-panel-info">
+          <p class="op-panel-eyebrow">06 — AUTO SHUTDOWN</p>
+          <h2 class="op-panel-h2">
+            <span data-lang="en">You left.<br>It saves energy.</span>
+            <span data-lang="vn">Bạn rời đi.<br>Nó tiết kiệm năng lượng.</span>
+          </h2>
+          <p class="op-panel-desc">
+            <span data-lang="en">No presence detected for 8 seconds. Fan gradually slows, field shrinks back from 40 cm to 15 cm, system returns to breathing standby.</span>
+            <span data-lang="vn">Không phát hiện sự hiện diện trong 8 giây. Quạt giảm dần, vùng thu về 15cm, hệ thống trở về chế độ chờ.</span>
+          </p>
+          <div class="op-spec-list">
+            <div class="op-spec-row"><span class="op-spec-key">State</span><span class="op-spec-val">SHUTTING DOWN</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Timer</span><span class="op-spec-val">8 seconds</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Field</span><span class="op-spec-val">40 → 15 cm</span></div>
+            <div class="op-spec-row"><span class="op-spec-key">Result</span><span class="op-spec-val blue">STANDBY</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /op-panels -->
+  </div><!-- /op-tabs-wrap -->
 </section>
+
+<script id="op-tab-script">
+function opTab(idx) {
+  var btns   = document.querySelectorAll('.op-tab-btn');
+  var panels = document.querySelectorAll('.op-panel');
+  btns.forEach(function(b,i){
+    b.classList.toggle('active', i===idx);
+    // manage dot indicator
+    var dot = b.querySelector('.tab-dot');
+    if(!dot && i===idx){
+      dot = document.createElement('span');
+      dot.className = 'tab-dot';
+      b.appendChild(dot);
+    } else if(dot && i!==idx){
+      dot.remove();
+    }
+  });
+  panels.forEach(function(p,i){ p.classList.toggle('active', i===idx); });
+}
+// Auto-cycle tabs every 5s when section is in view
+(function(){
+  var current = 0;
+  var timer = null;
+  var showcase = document.getElementById('operation-showcase');
+  if(!showcase) return;
+  function next(){ current=(current+1)%6; opTab(current); }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){ timer = setInterval(next, 5000); }
+      else { clearInterval(timer); }
+    });
+  }, {threshold:0.3});
+  obs.observe(showcase);
+  // Stop auto-cycle on manual click
+  document.querySelectorAll('.op-tab-btn').forEach(function(b,i){
+    b.addEventListener('click', function(){ clearInterval(timer); opTab(i); });
+  });
+})();
+</script>
 
 <div class="section-sep"></div>
 
@@ -1403,6 +2037,9 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
 
 <div class="section-sep"></div>
 
+<!-- =========================================
+     TEAM
+========================================= -->
 <section id="team">
   <div class="reveal" style="margin-bottom:0;">
     <p class="section-label">
@@ -1493,7 +2130,7 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
     <span data-lang="en">&copy; 2026 SmartFlow. Nimbus G1.</span>
     <span data-lang="vn">&copy; 2026 SmartFlow. Nimbus G1.</span>
   </span>
-  <span class="footer-mono">NIMBUS-G1-v1.0 / SMARTFLOW-TECH</span>
+  <span class="footer-mono">NIMBUS-G1-v1.0 / SmartFlow</span>
 </footer>
 
 <!-- =========================================
@@ -1529,86 +2166,8 @@ window.addEventListener('DOMContentLoaded', () => {
   }, 120);
 });
 
-/* ---- Momentum Smooth Scroll ---- */
-(function() {
-  const ease = 0.085; // lower = more momentum (0.06-0.12 sweet spot)
-  let currentY = window.scrollY;
-  let targetY = window.scrollY;
-  let rafId = null;
-  let isUserScrolling = false;
-  let lastScrollTime = 0;
-  let velocity = 0;
-  let lastDelta = 0;
-
-  // Detect trackpad vs wheel — accumulate target
-  window.addEventListener('wheel', (e) => {
-    e.preventDefault();
-    const delta = e.deltaY;
-    // Scale factor for mouse wheel vs trackpad
-    const scale = Math.abs(delta) > 50 ? 1.4 : 1;
-    targetY = Math.max(0, Math.min(
-      document.body.scrollHeight - window.innerHeight,
-      targetY + delta * scale
-    ));
-    lastScrollTime = performance.now();
-    lastDelta = delta;
-    if (!rafId) loop();
-  }, { passive: false });
-
-  // Touch support
-  let touchStartY = 0;
-  let touchLastY = 0;
-  let touchVelocity = 0;
-  window.addEventListener('touchstart', (e) => {
-    touchStartY = e.touches[0].clientY;
-    touchLastY = touchStartY;
-    touchVelocity = 0;
-  }, { passive: true });
-  window.addEventListener('touchmove', (e) => {
-    const y = e.touches[0].clientY;
-    const dy = touchLastY - y;
-    touchVelocity = dy;
-    touchLastY = y;
-    targetY = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetY + dy * 1.2));
-    if (!rafId) loop();
-  }, { passive: true });
-  window.addEventListener('touchend', () => {
-    // carry momentum
-    let v = touchVelocity;
-    function glide() {
-      if (Math.abs(v) < 0.5) return;
-      v *= 0.95;
-      targetY = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetY + v));
-      if (!rafId) loop();
-      requestAnimationFrame(glide);
-    }
-    glide();
-  }, { passive: true });
-
-  function loop() {
-    const diff = targetY - currentY;
-    if (Math.abs(diff) < 0.25) {
-      currentY = targetY;
-      window.scrollTo(0, currentY);
-      rafId = null;
-      return;
-    }
-    currentY += diff * ease;
-    window.scrollTo(0, currentY);
-    rafId = requestAnimationFrame(loop);
-  }
-
-  // Keyboard scroll — arrows, page up/down, home/end
-  window.addEventListener('keydown', (e) => {
-    const h = window.innerHeight;
-    const map = { ArrowDown: 80, ArrowUp: -80, PageDown: h * 0.85, PageUp: -h * 0.85, End: 1e9, Home: -1e9 };
-    if (map[e.key] !== undefined) {
-      e.preventDefault();
-      targetY = Math.max(0, Math.min(document.body.scrollHeight - window.innerHeight, targetY + map[e.key]));
-      if (!rafId) loop();
-    }
-  });
-})();
+/* ---- No custom scroll JS — native browser scroll only ---- */
+/* momentum/inertia removed: was intercepting wheel events and breaking sticky */
 
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.querySelectorAll('.fan-svg, .glow-orb, .particle, .sensing-zone, .fan-circle::before, .pulse-dot').forEach(el => {
