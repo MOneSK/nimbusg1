@@ -890,13 +890,13 @@ footer {
    BILINGUAL TRANSLATIONS
 ============================================ */
 [data-lang] { display: none; }
-[data-lang="en"] { display: block; }
-span[data-lang="en"] { display: inline; }
-span[data-lang="vn"] { display: none; }
-body.lang-vn [data-lang="en"] { display: none; }
-body.lang-vn [data-lang="vn"] { display: block; }
-body.lang-vn span[data-lang="en"] { display: none; }
-body.lang-vn span[data-lang="vn"] { display: inline; }
+[data-lang="vn"] { display: block; }
+span[data-lang="vn"] { display: inline; }
+span[data-lang="en"] { display: none; }
+body.lang-en [data-lang="vn"] { display: none; }
+body.lang-en [data-lang="en"] { display: block; }
+body.lang-en span[data-lang="vn"] { display: none; }
+body.lang-en span[data-lang="en"] { display: inline; }
 
 /* ============================================
    RESPONSIVE
@@ -937,6 +937,36 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
 /* ============================================
    SEPARATOR
 ============================================ */
+/* ============================================
+   MOBILE / TABLET GLOW FIX
+   mix-blend-mode:screen collapses on mobile
+   when parent lacks a compositing context.
+============================================ */
+@media (max-width: 1024px) {
+  .glow-orb {
+    mix-blend-mode: normal !important;
+    opacity: 1;
+  }
+  .glow-orb--blue {
+    background: radial-gradient(circle, rgba(80,160,255,0.55) 0%, rgba(30,100,255,0.25) 55%, transparent 80%);
+  }
+  .glow-orb--purple {
+    background: radial-gradient(circle, rgba(180,80,255,0.45) 0%, rgba(100,30,255,0.2) 55%, transparent 80%);
+  }
+  .glow-orb--blue2 {
+    background: radial-gradient(circle, rgba(100,200,255,0.4) 0%, rgba(50,130,255,0.2) 60%, transparent 80%);
+  }
+  .glow-orb--purplesoft {
+    background: radial-gradient(circle, rgba(200,100,255,0.35) 0%, rgba(140,40,255,0.15) 60%, transparent 80%);
+  }
+  .logic-bg-glow,
+  .cta-glow-center,
+  .cta-glow-purple {
+    mix-blend-mode: normal !important;
+    opacity: 0.8;
+  }
+}
+
 .section-sep {
   width: 1px;
   height: 92px;
@@ -953,8 +983,8 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
 <header>
   <a class="logo" href="#">SmartFlow</a>
   <div class="lang-toggle">
-    <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
-    <button class="lang-btn" id="btn-vn" onclick="setLang('vn')">VN</button>
+    <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn active" id="btn-vn" onclick="setLang('vn')">VN</button>
   </div>
 </header>
 
@@ -971,16 +1001,16 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
   <div class="hero-content reveal stagger-1">
     <p class="hero-eyebrow">
       <span data-lang="en">Intelligent Cooling System</span>
-      <span data-lang="vn">Hệ Thống Làm Mát Thông Minh</span>
+      <span data-lang="vn">Hệ Thống Làm Mát Tự Động</span>
     </p>
     <h1 class="hero-h1">SmartFlow<br>Nimbus G1</h1>
     <p class="hero-sub">
       <span data-lang="en">Airflow, reimagined.</span>
-      <span data-lang="vn">Luồng gió, được tái sinh.</span>
+      <span data-lang="vn">Gió thổi theo một cách khác.</span>
     </p>
     <p class="hero-body">
       <span data-lang="en">An intelligent cooling system that automatically adapts to human presence through responsive distance sensing.</span>
-      <span data-lang="vn">Hệ thống làm mát thông minh tự động thích ứng với sự hiện diện của con người thông qua cảm biến khoảng cách đáp ứng.</span>
+      <span data-lang="vn">Hệ thống làm mát thông minh — tự động điều chỉnh theo từng bước di chuyển của bạn nhờ cảm biến khoảng cách phản ứng tức thì.</span>
     </p>
     <div class="hero-ctas">
       <a href="#benefits" class="btn btn-primary">
@@ -989,7 +1019,7 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
       </a>
       <a href="#logic" class="btn btn-ghost">
         <span data-lang="en">Experience Nimbus</span>
-        <span data-lang="vn">Trải Nghiệm Nimbus</span>
+        <span data-lang="vn">Xem Nimbus Hoạt Động</span>
       </a>
     </div>
   </div>
@@ -1004,15 +1034,15 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
   <div class="intro-inner reveal">
     <p class="intro-label">
       <span data-lang="en">The Vision</span>
-      <span data-lang="vn">Tầm Nhìn</span>
+      <span data-lang="vn">Góc Nhìn</span>
     </p>
     <h2 class="intro-h2">
       <span data-lang="en">A Smarter Way to Stay Comfortable</span>
-      <span data-lang="vn">Cách Thông Minh Hơn Để Thoải Mái</span>
+      <span data-lang="vn">Mát mà không cần nghĩ tới</span>
     </h2>
     <p class="intro-body">
       <span data-lang="en">SmartFlow Nimbus G1 is a next-generation smart fan system designed to create a more seamless and energy-efficient cooling experience. Instead of relying on traditional buttons, Nimbus G1 uses intelligent sensing to respond to you in real time.</span>
-      <span data-lang="vn">SmartFlow Nimbus G1 là hệ thống quạt thông minh thế hệ tiếp theo được thiết kế để tạo ra trải nghiệm làm mát liền mạch và tiết kiệm năng lượng hơn. Thay vì dựa vào các nút truyền thống, Nimbus G1 sử dụng cảm biến thông minh để phản hồi bạn theo thời gian thực.</span>
+      <span data-lang="vn">SmartFlow Nimbus G1 là thế hệ quạt thông minh mới — được thiết kế để mang lại cảm giác mát mẻ tự nhiên, tiết kiệm điện hơn. Thay vì mò mẫm tìm nút bấm, Nimbus G1 cảm nhận bạn và phản hồi ngay tức thì.</span>
     </p>
   </div>
 </section>
@@ -1027,7 +1057,7 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
     <div style="text-align:center;margin-bottom:56px;" class="reveal">
       <p class="section-label">
         <span data-lang="en">The Friction Shift</span>
-        <span data-lang="vn">Thay Đổi Ma Sát</span>
+        <span data-lang="vn">Vấn Đề & Giải Pháp</span>
       </p>
       <h2 class="section-h2">
         <span data-lang="en">Problems &amp; Solutions</span>
@@ -1039,28 +1069,28 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
       <div class="friction-col">
         <p class="friction-heading">
           <span data-lang="en">Traditional Systems</span>
-          <span data-lang="vn">Hệ Thống Truyền Thống</span>
+          <span data-lang="vn">Quạt Thông Thường</span>
         </p>
         <ul class="friction-list">
           <li class="friction-item stagger-1">
             <span class="bullet bullet--muted"></span>
             <span data-lang="en">Manual controls require constant interaction and attention.</span>
-            <span data-lang="vn">Điều khiển thủ công đòi hỏi tương tác và chú ý liên tục.</span>
+            <span data-lang="vn">Phải chỉnh tay mỗi lần — mất công, mất thời gian.</span>
           </li>
           <li class="friction-item stagger-2">
             <span class="bullet bullet--muted"></span>
             <span data-lang="en">Energy wasted when the room is empty or presence undetected.</span>
-            <span data-lang="vn">Lãng phí năng lượng khi phòng trống hoặc không phát hiện sự hiện diện.</span>
+            <span data-lang="vn">Chạy cả ngày dù phòng chẳng có ai — điện tốn, tiền mất.</span>
           </li>
           <li class="friction-item stagger-3">
             <span class="bullet bullet--muted"></span>
             <span data-lang="en">Fixed speed regardless of how close or far you are from the fan.</span>
-            <span data-lang="vn">Tốc độ cố định bất kể bạn gần hay xa quạt.</span>
+            <span data-lang="vn">Tốc độ cố định, dù bạn đứng sát hay ngồi xa.</span>
           </li>
           <li class="friction-item stagger-4">
             <span class="bullet bullet--muted"></span>
             <span data-lang="en">No safety shutoff when objects approach dangerously close.</span>
-            <span data-lang="vn">Không có chức năng tắt an toàn khi vật thể tiếp cận quá gần.</span>
+            <span data-lang="vn">Không có cơ chế dừng an toàn khi vật thể lại quá gần.</span>
           </li>
         </ul>
       </div>
@@ -1068,28 +1098,28 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
       <div class="friction-col">
         <p class="friction-heading">
           <span data-lang="en">Nimbus G1 Solutions</span>
-          <span data-lang="vn">Giải Pháp Nimbus G1</span>
+          <span data-lang="vn">Nimbus G1 Giải Quyết Ra Sao</span>
         </p>
         <ul class="friction-list">
           <li class="friction-item stagger-1">
             <span class="bullet bullet--blue"></span>
             <span data-lang="en">Presence detection activates the system automatically as you approach.</span>
-            <span data-lang="vn">Phát hiện sự hiện diện kích hoạt hệ thống tự động khi bạn đến gần.</span>
+            <span data-lang="vn">Phát hiện người — tự bật khi bạn bước lại gần.</span>
           </li>
           <li class="friction-item stagger-2">
             <span class="bullet bullet--blue"></span>
             <span data-lang="en">Smart shutdown logic conserves power when no presence is detected.</span>
-            <span data-lang="vn">Logic tắt thông minh tiết kiệm điện khi không phát hiện sự hiện diện.</span>
+            <span data-lang="vn">Tự tắt khi không còn ai — tiết kiệm điện không cần nhớ.</span>
           </li>
           <li class="friction-item stagger-3">
             <span class="bullet bullet--blue"></span>
             <span data-lang="en">Airflow speed adapts dynamically based on your proximity distance.</span>
-            <span data-lang="vn">Tốc độ luồng khí thích ứng linh hoạt dựa trên khoảng cách tiếp cận của bạn.</span>
+            <span data-lang="vn">Gió mạnh hay nhẹ tùy khoảng cách — càng gần càng mát.</span>
           </li>
           <li class="friction-item stagger-4">
             <span class="bullet bullet--blue"></span>
             <span data-lang="en">Emergency force stop triggers when objects are detected below 7cm.</span>
-            <span data-lang="vn">Dừng khẩn cấp kích hoạt khi phát hiện vật thể dưới 7cm.</span>
+            <span data-lang="vn">Dừng khẩn cấp ngay khi phát hiện vật thể dưới 7cm.</span>
           </li>
         </ul>
       </div>
@@ -1106,11 +1136,11 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
   <div class="benefits-header reveal">
     <p class="section-label">
       <span data-lang="en">Intelligent Impact</span>
-      <span data-lang="vn">Tác Động Thông Minh</span>
+      <span data-lang="vn">Điểm Khác Biệt</span>
     </p>
     <h2 class="section-h2">
       <span data-lang="en">Why Nimbus G1</span>
-      <span data-lang="vn">Tại Sao Chọn Nimbus G1</span>
+      <span data-lang="vn">Vì Sao Chọn Nimbus G1</span>
     </h2>
   </div>
   <div class="benefits-grid">
@@ -1121,11 +1151,11 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
       </div>
       <p class="benefit-title">
         <span data-lang="en">Automatic Comfort</span>
-        <span data-lang="vn">Thoải Mái Tự Động</span>
+        <span data-lang="vn">Mát Không Cần Chạm</span>
       </p>
       <p class="benefit-desc">
         <span data-lang="en">System activates as you approach. No buttons, no setup — just instant comfort.</span>
-        <span data-lang="vn">Hệ thống kích hoạt khi bạn tiếp cận. Không cần nút bấm, không cần thiết lập.</span>
+        <span data-lang="vn">Bước lại gần là quạt tự bật. Không nút, không app, không cần làm gì.</span>
       </p>
     </div>
     <!-- Card 2 -->
@@ -1135,7 +1165,7 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
       </div>
       <p class="benefit-title">
         <span data-lang="en">Energy Efficient</span>
-        <span data-lang="vn">Tiết Kiệm Năng Lượng</span>
+        <span data-lang="vn">Tiết Kiệm Điện Thật Sự</span>
       </p>
       <p class="benefit-desc">
         <span data-lang="en">Smart shutdown logic saves power when no presence detected. Built for sustainability.</span>
@@ -1465,10 +1495,11 @@ body.lang-vn span[data-lang="vn"] { display: inline; }
   .op-tab-btn { min-width: 90px; padding: 16px 8px; font-size: 9px; }
 }
 
-/* ── MOBILE PERF: Kill heavy effects on touch devices ── */
+/* ── MOBILE PERF: Reduce heavy effects on touch devices ── */
 @media (hover: none) and (pointer: coarse) {
-  /* Disable filter:blur on orbs — biggest mobile perf killer */
-  .glow-orb { filter: none !important; opacity: 0.15 !important; animation: none !important; }
+  /* Reduce blur on orbs for perf, keep visible — mix-blend-mode:screen is removed
+     in the 1024px block above so glows stay visible on mobile */
+  .glow-orb { filter: blur(60px) !important; opacity: 0.9 !important; animation: none !important; mix-blend-mode: normal !important; }
   /* Kill grain overlay */
   body::before { display: none !important; }
   /* Kill fan-circle pseudo rings */
@@ -2139,7 +2170,7 @@ function opTab(idx) {
 <script>
 /* ---- Language Toggle ---- */
 function setLang(lang) {
-  document.body.classList.toggle('lang-vn', lang === 'vn');
+  document.body.classList.toggle('lang-en', lang === 'en');
   document.getElementById('btn-en').classList.toggle('active', lang === 'en');
   document.getElementById('btn-vn').classList.toggle('active', lang === 'vn');
 }
