@@ -64,7 +64,7 @@ document.addEventListener('touchend', function(e) {
 ============================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 /* ---- Smooth scroll native (required for sticky to work) ---- */
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   background: var(--bg);
   color: var(--white);
@@ -72,6 +72,7 @@ body {
   font-size: 18px;
   line-height: 1.6;
   overflow-x: hidden;
+  max-width: 100vw;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -922,7 +923,8 @@ body.lang-en span[data-lang="en"] { display: inline; }
    RESPONSIVE
 ============================================ */
 @media (max-width: 900px) {
-  #hero { grid-template-columns: 1fr; padding: 100px 24px 60px; }
+  /* ── Layout ── */
+  #hero { grid-template-columns: 1fr; padding: 100px 20px 60px; }
   .hero-visual { height: 300px; }
   .fan-circle { width: 240px; height: 240px; }
   .fan-svg { width: 160px; height: 160px; }
@@ -936,16 +938,61 @@ body.lang-en span[data-lang="en"] { display: inline; }
   .roadmap-grid { grid-template-columns: 1fr; }
   .roadmap-item { border-right: none; border-bottom: 1px solid var(--border); }
   .team-grid { grid-template-columns: repeat(2,1fr); }
-  header { padding: 16px 24px; }
-  #intro, #benefits, #pricing, #roadmap, #team, #cta { padding-left: 24px; padding-right: 24px; }
-  .logic-inner { padding: 0 24px; }
-  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px; }
+  header { padding: 16px 20px; }
+  #intro, #benefits, #pricing, #roadmap, #team, #cta { padding-left: 20px; padding-right: 20px; }
+  .logic-inner { padding: 0 20px; }
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+
+  /* ── Clamp all sections to viewport ── */
+  section, #hero, #intro, #friction, #benefits, #logic,
+  #pricing, #roadmap, #team, #cta {
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero orbs: constrain so they don't bleed outside ── */
+  .hero-orb-1 { width: 100vw; height: 100vw; max-width: 400px; max-height: 400px; right: -20vw; }
+  .hero-orb-2 { width: 70vw; height: 70vw; max-width: 300px; max-height: 300px; }
+  .hero-orb-3 { width: 60vw; height: 60vw; max-width: 280px; max-height: 280px; }
+  .hero-orb-4 { width: 50vw; height: 50vw; max-width: 250px; max-height: 250px; }
+
+  /* ── Price card: full width on mobile ── */
+  .price-card { padding: 36px 24px; max-width: 100%; box-sizing: border-box; }
+
+  /* ── Logic bg glow: cap it ── */
+  .logic-bg-glow { width: 100vw; height: 200px; }
+
+  /* ── Friction section padding ── */
+  #friction { padding: 60px 20px; }
+  .friction-col { padding: 36px 20px; }
+
+  /* ── CTA glow orbs ── */
+  .cta-glow-center { width: 100vw; height: 250px; }
+  .cta-glow-purple { width: 70vw; height: 200px; }
 }
 
 @media (max-width: 500px) {
   .team-grid { grid-template-columns: 1fr; }
   .users-grid { grid-template-columns: 1fr 1fr; }
-  .price-card { padding: 36px 28px; }
+  .price-card { padding: 32px 20px; width: calc(100% - 40px); }
+
+  /* ── Prevent any child overflowing ── */
+  * { max-width: 100%; }
+  img, svg, canvas { max-width: 100%; }
+
+  /* ── Text sizing ── */
+  .hero-h1 { font-size: 32px; }
+  .hero-body { font-size: 15px; }
+  .cta-h1 { font-size: 32px; }
+  .section-h2 { font-size: 24px; }
+
+  /* ── Buttons ── */
+  .hero-ctas { flex-direction: column; }
+  .btn { width: 100%; text-align: center; }
+
+  /* ── Welcome screen ── */
+  .wc-brand { font-size: 48px; }
+  .wc-eyebrow { font-size: 9px; letter-spacing: 0.18em; }
 }
 
 /* Stagger for items */
