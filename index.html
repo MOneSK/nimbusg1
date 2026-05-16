@@ -244,6 +244,181 @@ section#hero { overflow: visible; } /* let orbs bleed full width */
 .btn-ghost:hover { background: rgba(255,255,255,0.06); }
 
 /* ============================================
+   WATCH BUTTON — PULSE ATTENTION
+============================================ */
+.btn-watch {
+  position: relative;
+  overflow: visible !important;
+}
+/* Play icon */
+.btn-watch-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  margin-right: 10px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.btn-watch-icon svg {
+  width: 9px; height: 9px;
+  fill: #fff;
+  margin-left: 2px; /* optical center for play triangle */
+}
+.btn-watch:hover .btn-watch-icon { background: rgba(255,255,255,0.28); }
+
+/* Pulsing rings */
+.btn-watch::before,
+.btn-watch::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(255,255,255,0.55);
+  pointer-events: none;
+  animation: watch-pulse 2.4s ease-out infinite;
+}
+.btn-watch::after {
+  animation-delay: 1.2s;
+}
+@keyframes watch-pulse {
+  0%   { transform: scale(1);    opacity: 0.7; }
+  60%  { transform: scale(1.18); opacity: 0; }
+  100% { transform: scale(1.18); opacity: 0; }
+}
+
+/* Subtle shimmer on the border */
+@keyframes watch-border-glow {
+  0%, 100% { border-color: rgba(255,255,255,0.18); box-shadow: none; }
+  50%       { border-color: rgba(91,168,255,0.6);  box-shadow: 0 0 16px rgba(91,168,255,0.25); }
+}
+.btn-watch {
+  animation: watch-border-glow 3s ease-in-out infinite;
+}
+.btn-watch:hover {
+  animation: none;
+  border-color: rgba(255,255,255,0.45);
+  box-shadow: 0 0 20px rgba(91,168,255,0.2);
+}
+
+/* ============================================
+   VIDEO MODAL
+============================================ */
+#video-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  align-items: center;
+  justify-content: center;
+}
+#video-modal.open { display: flex; }
+
+.vm-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  animation: vm-fade-in 0.3s ease;
+}
+@keyframes vm-fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.vm-box {
+  position: relative;
+  z-index: 1;
+  width: min(860px, 92vw);
+  border-radius: 16px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 32px 80px rgba(0,0,0,0.7), 0 0 60px rgba(61,120,255,0.15);
+  animation: vm-pop-in 0.35s cubic-bezier(0.23, 1, 0.32, 1);
+}
+@keyframes vm-pop-in {
+  from { transform: scale(0.88) translateY(24px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+.vm-video-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 */
+}
+.vm-video-wrap iframe,
+.vm-video-wrap video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+/* Placeholder shown when no URL is set */
+.vm-placeholder {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: linear-gradient(135deg, #0a0a18 0%, #0d1525 100%);
+  color: rgba(255,255,255,0.45);
+  font-size: 15px;
+  font-family: var(--font-main);
+}
+.vm-placeholder-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  border: 2px solid rgba(91,168,255,0.35);
+  display: flex; align-items: center; justify-content: center;
+}
+.vm-placeholder-icon svg { fill: rgba(91,168,255,0.55); width: 26px; height: 26px; margin-left: 4px; }
+
+.vm-close {
+  position: absolute;
+  top: 14px; right: 14px;
+  z-index: 10;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  border: 1px solid rgba(255,255,255,0.15);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+.vm-close:hover { background: rgba(255,255,255,0.12); }
+.vm-close svg { fill: #fff; width: 14px; height: 14px; }
+
+.vm-label {
+  padding: 14px 20px 16px;
+  background: #0a0a14;
+  border-top: 1px solid rgba(255,255,255,0.07);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+}
+.vm-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--blue);
+  box-shadow: 0 0 8px rgba(91,168,255,0.8);
+  animation: vm-dot-blink 2s ease-in-out infinite;
+}
+@keyframes vm-dot-blink {
+  0%, 100% { opacity: 1; } 50% { opacity: 0.35; }
+}
+
+/* ============================================
    HERO
 ============================================ */
 #hero {
@@ -512,14 +687,14 @@ section#hero { overflow: visible; } /* let orbs bleed full width */
 }
 .benefits-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0;
   border: 1px solid var(--border);
 }
 .benefit-card {
   background: var(--white);
   color: #000;
-  padding: 44px 36px;
+  padding: 36px 24px;
   border-right: 1px solid rgba(0,0,0,0.08);
   transition: transform 0.25s var(--ease-out), box-shadow 0.25s var(--ease-out);
   cursor: default;
@@ -860,6 +1035,11 @@ section#hero { overflow: visible; } /* let orbs bleed full width */
   text-align: center;
   position: relative;
   overflow: hidden;
+  perspective: 1200px;
+}
+.cta-h1-wrap {
+  perspective: 1200px;
+  overflow: visible;
 }
 .cta-glow-center {
   position: absolute;
@@ -889,6 +1069,16 @@ section#hero { overflow: visible; } /* let orbs bleed full width */
   margin: 0 auto 48px;
   position: relative;
   z-index: 2;
+  /* start state — far away, small, faded */
+  opacity: 0;
+  transform: translateZ(-600px) scale(0.3);
+  transition: none;
+  will-change: transform, opacity;
+}
+.cta-h1.cta-traveled {
+  opacity: 1;
+  transform: translateZ(0) scale(1);
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.0s ease;
 }
 .cta-btn { position: relative; z-index: 2; font-size: 17px; padding: 18px 52px; }
 
@@ -1297,10 +1487,13 @@ body.lang-en span[data-lang="en"] { display: inline; }
         <span data-lang="en">Explore Features</span>
         <span data-lang="vn">Khám Phá Tính Năng</span>
       </a>
-      <a href="#logic" class="btn btn-ghost">
+      <button id="watch-btn" class="btn btn-ghost btn-watch" onclick="openVideoModal()">
+        <span class="btn-watch-icon">
+          <svg viewBox="0 0 10 12" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 10,6 0,12"/></svg>
+        </span>
         <span data-lang="en">Experience Nimbus</span>
         <span data-lang="vn">Xem Nimbus Hoạt Động</span>
-      </a>
+      </button>
     </div>
   </div>
 </section>
@@ -1427,43 +1620,71 @@ body.lang-en span[data-lang="en"] { display: inline; }
     <!-- Card 1 -->
     <div class="benefit-card reveal stagger-1">
       <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M6.3 6.3a8 8 0 0 0 0 11.4"/><path d="M17.7 6.3a8 8 0 0 1 0 11.4"/><path d="M3.5 3.5a14 14 0 0 0 0 17"/><path d="M20.5 3.5a14 14 0 0 1 0 17"/></svg>
       </div>
       <p class="benefit-title">
-        <span data-lang="en">Automatic Comfort</span>
-        <span data-lang="vn">Mát Không Cần Chạm</span>
+        <span data-lang="en">Spatial Detection</span>
+        <span data-lang="vn">Nhận Diện Không Gian</span>
       </p>
       <p class="benefit-desc">
-        <span data-lang="en">System activates as you approach. No buttons, no setup — just instant comfort.</span>
-        <span data-lang="vn">Bước lại gần là quạt tự bật. Không nút, không app, không cần làm gì.</span>
+        <span data-lang="en">Detects human presence via ultrasonic sensing. No camera, no contact needed.</span>
+        <span data-lang="vn">Phát hiện người bằng sóng siêu âm.</span>
       </p>
     </div>
     <!-- Card 2 -->
     <div class="benefit-card reveal stagger-2">
       <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M5 8c0-1.7 1.3-3 3-3s3 1.3 3 3-1.3 3-3 3H2"/><path d="M5 16c0-1.7 1.3-3 3-3s3 1.3 3 3-1.3 3-3 3H2"/><path d="M13 12h9"/></svg>
       </div>
       <p class="benefit-title">
-        <span data-lang="en">Energy Efficient</span>
-        <span data-lang="vn">Tiết Kiệm Điện Thật Sự</span>
+        <span data-lang="en">Instant Response</span>
+        <span data-lang="vn">Phản Hồi Thông Minh</span>
       </p>
       <p class="benefit-desc">
-        <span data-lang="en">Smart shutdown logic saves power when no presence detected. Built for sustainability.</span>
-        <span data-lang="vn">Logic tắt thông minh tiết kiệm điện khi không phát hiện sự hiện diện.</span>
+        <span data-lang="en">Activates immediately. No buttons, no app required.</span>
+        <span data-lang="vn">Kích hoạt tức thì. Không cần thao tác.</span>
       </p>
     </div>
     <!-- Card 3 -->
     <div class="benefit-card reveal stagger-3">
       <div class="benefit-icon">
-        <svg viewBox="0 0 24 24"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 8v4l3 3"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       </div>
       <p class="benefit-title">
-        <span data-lang="en">Adaptive Airflow</span>
-        <span data-lang="vn">Luồng Khí Thích Ứng</span>
+        <span data-lang="en">Quiet Operation</span>
+        <span data-lang="vn">Vận Hành Êm Ái</span>
       </p>
       <p class="benefit-desc">
-        <span data-lang="en">Speed translates from your proximity. Closer means cooler, always proportional.</span>
-        <span data-lang="vn">Tốc độ tương quan với khoảng cách của bạn. Gần hơn nghĩa là mát hơn.</span>
+        <span data-lang="en">Powerful performance at low noise levels.</span>
+        <span data-lang="vn">Hiệu năng mạnh mẽ với độ ồn cực thấp.</span>
+      </p>
+    </div>
+    <!-- Card 4 -->
+    <div class="benefit-card reveal stagger-4">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <p class="benefit-title">
+        <span data-lang="en">Auto Protection</span>
+        <span data-lang="vn">Bảo Vệ Chủ Động</span>
+      </p>
+      <p class="benefit-desc">
+        <span data-lang="en">Reduces accident risk — like a hand entering the fan zone.</span>
+        <span data-lang="vn">Giảm nguy cơ tai nạn như cho tay vào.</span>
+      </p>
+    </div>
+    <!-- Card 5 -->
+    <div class="benefit-card reveal stagger-5">
+      <div class="benefit-icon">
+        <svg viewBox="0 0 24 24"><path d="M18 11V6a2 2 0 0 0-4 0v5"/><path d="M14 10V4a2 2 0 0 0-4 0v6"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8a6 6 0 0 0 12 0v-3a2 2 0 0 0-4 0"/></svg>
+      </div>
+      <p class="benefit-title">
+        <span data-lang="en">Natural Interaction</span>
+        <span data-lang="vn">Tương Tác Tự Nhiên</span>
+      </p>
+      <p class="benefit-desc">
+        <span data-lang="en">One touch to control. Simple and intuitive.</span>
+        <span data-lang="vn">Một chạm điều khiển. Đơn giản.</span>
       </p>
     </div>
   </div>
@@ -11982,7 +12203,7 @@ function opTab(idx) {
         <span data-lang="en">Student-Friendly</span>
         <span data-lang="vn">Thân Thiện Với Sinh Viên</span>
       </div>
-      <div class="price-amount">200,000 – 250,000</div>
+      <div class="price-amount">249,000</div>
       <div class="price-currency">VND</div>
       <p class="price-note">
         <span data-lang="en">One-time purchase. No subscription. No recurring fees.</span>
@@ -11993,31 +12214,18 @@ function opTab(idx) {
   <div class="users-grid reveal" style="margin-top:56px;">
     <div class="user-tile stagger-1">
       <div class="user-avatar">
-        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <p class="user-label">
-        <span data-lang="en">Students</span>
-        <span data-lang="vn">Sinh Viên</span>
-      </p>
-      <p class="user-desc">
-        <span data-lang="en">Dorm rooms, study desks</span>
-        <span data-lang="vn">Phòng ký túc xá, bàn học</span>
-      </p>
-    </div>
-    <div class="user-tile stagger-2">
-      <div class="user-avatar">
         <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
       </div>
       <p class="user-label">
-        <span data-lang="en">Remote Workers</span>
-        <span data-lang="vn">Làm Việc Từ Xa</span>
+        <span data-lang="en">Office Workers</span>
+        <span data-lang="vn">Dân Văn Phòng</span>
       </p>
       <p class="user-desc">
-        <span data-lang="en">Home offices, long sessions</span>
-        <span data-lang="vn">Văn phòng tại nhà, làm lâu</span>
+        <span data-lang="en">Sits fixed for long hours in front of a screen.</span>
+        <span data-lang="vn">Ngồi cố định nhiều giờ.</span>
       </p>
     </div>
-    <div class="user-tile stagger-3">
+    <div class="user-tile stagger-2">
       <div class="user-avatar">
         <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </div>
@@ -12026,21 +12234,34 @@ function opTab(idx) {
         <span data-lang="vn">Hộ Gia Đình</span>
       </p>
       <p class="user-desc">
-        <span data-lang="en">Bedrooms, living spaces</span>
-        <span data-lang="vn">Phòng ngủ, không gian sống</span>
+        <span data-lang="en">Frequently moves in and out of rooms throughout the day.</span>
+        <span data-lang="vn">Hay ra vào phòng trong ngày.</span>
+      </p>
+    </div>
+    <div class="user-tile stagger-3">
+      <div class="user-avatar">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <p class="user-label">
+        <span data-lang="en">Families with Kids</span>
+        <span data-lang="vn">Gia Đình Có Trẻ Nhỏ</span>
+      </p>
+      <p class="user-desc">
+        <span data-lang="en">Home with active kids who play near appliances.</span>
+        <span data-lang="vn">Trẻ hay nghịch gần đồ.</span>
       </p>
     </div>
     <div class="user-tile stagger-4">
       <div class="user-avatar">
-        <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.06 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 2.96 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16.92z"/></svg>
+        <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
       </div>
       <p class="user-label">
-        <span data-lang="en">Small Offices</span>
-        <span data-lang="vn">Văn Phòng Nhỏ</span>
+        <span data-lang="en">Energy Savers</span>
+        <span data-lang="vn">Người Tiết Kiệm Điện</span>
       </p>
       <p class="user-desc">
-        <span data-lang="en">Meeting rooms, workstations</span>
-        <span data-lang="vn">Phòng họp, trạm làm việc</span>
+        <span data-lang="en">Doesn't want to waste electricity.</span>
+        <span data-lang="vn">Không muốn lãng phí điện.</span>
       </p>
     </div>
   </div>
@@ -12190,10 +12411,12 @@ function opTab(idx) {
   <div class="cta-glow-center" style="background:radial-gradient(ellipse, rgba(61,120,255,0.65) 0%, rgba(100,40,255,0.3) 45%, transparent 75%);"></div>
   <div class="cta-glow-purple" style="background:radial-gradient(ellipse, rgba(200,80,255,0.55) 0%, rgba(120,40,255,0.25) 55%, transparent 80%);"></div>
   <div style="position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle, rgba(91,168,255,0.35) 0%, transparent 70%);filter:blur(100px);bottom:-80px;right:15%;pointer-events:none;mix-blend-mode:screen;"></div>
-  <h1 class="cta-h1 reveal">
-    <span data-lang="en">Step Into Intelligent Airflow.</span>
-    <span data-lang="vn">Bước Vào Luồng Gió Thông Minh.</span>
-  </h1>
+  <div class="cta-h1-wrap">
+    <h1 class="cta-h1" id="cta-h1">
+      <span data-lang="en">Step Into Intelligent Airflow.</span>
+      <span data-lang="vn">Bước Vào Luồng Gió Thông Minh.</span>
+    </h1>
+  </div>
   <a href="#hero" class="btn btn-primary cta-btn reveal">
     <span data-lang="en">Discover More</span>
     <span data-lang="vn">Khám Phá Thêm</span>
@@ -12313,5 +12536,109 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 </div><!-- /page-content -->
 
+
+<!-- =========================================
+     VIDEO MODAL
+========================================= -->
+<div id="video-modal" role="dialog" aria-modal="true" aria-label="Nimbus video">
+  <div class="vm-backdrop" onclick="closeVideoModal()"></div>
+  <div class="vm-box">
+    <button class="vm-close" onclick="closeVideoModal()" aria-label="Close">
+      <svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
+        <path d="M1 1l12 12M13 1L1 13" stroke="#fff" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <div class="vm-video-wrap" id="vm-video-container">
+      <div class="vm-placeholder" id="vm-placeholder">
+        <div class="vm-placeholder-icon">
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polygon points="5,3 19,12 5,21"/></svg>
+        </div>
+        <span>Video coming soon</span>
+      </div>
+    </div>
+    <div class="vm-label">
+      <span class="vm-dot"></span>
+      <span data-lang="en">Nimbus G1 — In Action</span>
+      <span data-lang="vn">Nimbus G1 — Hoạt Động Thực Tế</span>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---- VIDEO CONFIG — set your URL here ---- */
+var NIMBUS_VIDEO_URL = 'Final.mp4'; /* e.g. 'https://www.youtube.com/watch?v=YOUR_ID' */
+
+function toYouTubeEmbed(url) {
+  var match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  if (match) return 'https://www.youtube.com/embed/' + match[1] + '?autoplay=1&rel=0';
+  return null;
+}
+
+function openVideoModal() {
+  var modal = document.getElementById('video-modal');
+  var wrap  = document.getElementById('vm-video-container');
+  var ph    = document.getElementById('vm-placeholder');
+  wrap.querySelectorAll('iframe, video').forEach(function(el){ el.remove(); });
+  if (NIMBUS_VIDEO_URL) {
+    ph.style.display = 'none';
+    var embedUrl = toYouTubeEmbed(NIMBUS_VIDEO_URL);
+    if (embedUrl) {
+      var iframe = document.createElement('iframe');
+      iframe.src = embedUrl;
+      iframe.allow = 'autoplay; encrypted-media; fullscreen';
+      iframe.allowFullscreen = true;
+      wrap.appendChild(iframe);
+    } else {
+      var video = document.createElement('video');
+      video.src = NIMBUS_VIDEO_URL;
+      video.controls = true;
+      video.autoplay = true;
+      video.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+      wrap.appendChild(video);
+    }
+  } else {
+    ph.style.display = 'flex';
+  }
+  modal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeVideoModal() {
+  var modal = document.getElementById('video-modal');
+  var wrap  = document.getElementById('vm-video-container');
+  modal.classList.remove('open');
+  document.body.style.overflow = '';
+  wrap.querySelectorAll('iframe').forEach(function(el){ el.src = el.src; });
+  wrap.querySelectorAll('video').forEach(function(el){ el.pause(); });
+}
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape') closeVideoModal();
+});
+</script>
+
+<script>
+/* ---- CTA depth travel animation ---- */
+(function() {
+  var h1 = document.getElementById('cta-h1');
+  if (!h1) return;
+
+  var triggered = false;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting && !triggered) {
+        triggered = true;
+        /* small delay so the user sees it "arrive" */
+        setTimeout(function() {
+          h1.classList.add('cta-traveled');
+        }, 120);
+        observer.unobserve(h1);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  observer.observe(h1);
+})();
+</script>
 </body>
 </html>
